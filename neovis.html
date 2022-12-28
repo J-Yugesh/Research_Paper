@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+ <head>
+  <title>Log Visualization</title>
+  <style type="test/css">
+   
+  </style>
+  
+  <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
+  
+ </head>
+ 
+ <script type="text/javascript">
+  function draw() {
+   var str = document.getElementById("query").value;
+   var config = {
+    container_id: "viz",
+    server_url: "bolt://localhost:11005",
+    server_user: "neo4j",
+    server_password: "1234",
+    labels:{
+      
+    },
+    relationships:{
+     "CONNECTS_TO": {
+      "thickness": " ",
+      "caption": false},
+     "STARTS_CONNECTION": {
+      "thickness": " ",
+      "caption": false}},
+   
+    initial_cypher: str
+    //MATCH p=()-->(:Weird) RETURN p LIMIT 100  - for display of entire wired logs
+   }
+   
+   
+   var viz = new NeoVis.default(config);
+   viz.render();
+   
+  }
+ </script>
+ 
+ <body>
+  <h2 style="text-align:center;"> Visualization of given Log files </h2>
+  <h3>Enter yor cypher query below: </h3>
+  <input id="query" type="text" size="50" placeholder="Enter the query" />
+  <br>
+  <br>
+  <button onclick="draw()" id="btn"> Submit </button>
+  <div id="viz" style="height: 800px;" ></div>
+   
+ </body>
+</html>

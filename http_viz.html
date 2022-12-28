@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+ <head>
+  <title>HTTP Log Visualization</title>
+  <style type="test/css">
+   html, body {
+    font: 16pt arial;}
+   
+  </style>
+ 
+  <script type="text/javascript" src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
+  <script
+   src="https://code.jquery.com/jquery-3.2.1.min.js"
+   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+   crossorigin="anonymous"></script>
+ </head>
+ 
+ <script type="text/javascript">
+  var viz;
+  function draw() {
+   var config = {
+    container_id: "viz",
+    server_url: "bolt://localhost:11005",
+    server_user: "neo4j",
+    server_password: "1234",
+    labels:{
+     "S_IP": {
+      "caption":"IP",
+      "size":"degree"
+     },
+     "D_IP": {
+      "caption":"IP",
+      "size":"degree"
+     }},
+    relationships:{
+     "REQUESTS": {
+      "thickness": " ",
+      "caption": false},
+     "HAS_URI": {
+      "thickness": " ",
+      "caption": false},
+     "HAS_HOST": {
+      "thickness": " ",
+      "caption": false},
+     "HAS_REFERRER": {
+      "thickness": " ",
+      "caption": false},
+     "HAS_USERAGENT": {
+      "thickness": " ",
+      "caption": false},
+     "RESPONDS": {
+      "thickness": " ",
+      "caption": false},
+     "DIRECT_CONNECTION": {
+      "thickness": "count",
+      "caption": false}},
+    arrows: true,
+   
+   }
+   
+   
+   viz = new NeoVis.default(config);
+   viz.render();
+   console.log(viz);
+  }
+ </script>
+ 
+ 
+<body onload="draw()">
+ <h2 style="text-align:center;"> Visualization of HTTP Log File </h2>
+ <h3>Enter yor cypher query: <textarea rows="4" cols=50 id="cypher"></textarea><br></h3>
+ <input type="submit" value="Submit" id="reload">
+ <input type="submit" value="Stabilize" id="stabilize">
+ <br>
+ <br>
+ <div id="viz" style="height: 800px;" ></div>
+</body>
+
+<script>
+ $("#reload").click(function() {
+  var cypher = $("#cypher").val();
+  if (cypher.length > 3) {
+   viz.renderWithCypher(cypher);} 
+  else {
+   console.log("reload");
+   viz.reload();}});
+ $("#stabilize").click(function() {
+  viz.stabilize();})
+</script>
+</html>
